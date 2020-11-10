@@ -1,6 +1,9 @@
 require('dotenv').config();
 
-const { mungedLocation, mungedWeather } = require('../utils');
+const { mungedLocation, mungedWeather, mungedTrail, mungedYelp } = require('../utils.js');
+
+const rawTrails = require('../data/trails');
+const rawYelp = require('../data/yelp');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -792,6 +795,285 @@ describe('app routes', () => {
       ];
 
       const result = mungedWeather(rawWeather);
+      expect(result).toEqual(expectation);
+    });
+
+    test('returns munged trails', async() => {
+
+      const expectation = [
+        {
+          'condition_date': '2020-11-08',
+          'condition_time': '12:37:17',
+          'conditions': 'All Clear',
+          'length': 8.9,
+          'location': 'Stanley, Virginia',
+          'name': 'Old Rag Loop',
+          'star_votes': 238,
+          'stars': 4.8,
+          'summary': 'An extremely popular hike, and for good reason, with awesome scrambling and stunning views.',
+          'trail_url': 'https://www.hikingproject.com/trail/7005428/old-rag-loop',
+        },
+        {
+          'condition_date': '2020-10-17',
+          'condition_time': '11:27:04',
+          'conditions': 'All Clear',
+          'length': 8.2,
+          'location': 'Stanley, Virginia',
+          'name': 'Whiteoak Canyon to Cedar Run Loop',
+          'star_votes': 120,
+          'stars': 4.7,
+          'summary': 'Among the best hikes --if not the best hike-- in Shenandoah. Enjoy waterfalls for 9 miles.',
+          'trail_url': 'https://www.hikingproject.com/trail/7013220/whiteoak-canyon-to-cedar-run-loop',
+        },
+        {
+          'condition_date': '2020-10-13',
+          'condition_time': '09:10:35',
+          'conditions': 'Minor Issues',
+          'length': 19.6,
+          'location': 'Davis, West Virginia',
+          'name': 'Dolly Sods Wilderness',
+          'star_votes': 50,
+          'stars': 4.7,
+          'summary': 'A great multi-night, long-weekend trip with amazing views and incredible changes in terrain',
+          'trail_url': 'https://www.hikingproject.com/trail/7005081/dolly-sods-wilderness',
+        },
+        {
+          'condition_date': '2020-11-08',
+          'condition_time': '13:46:17',
+          'conditions': 'All Clear',
+          'length': 13.4,
+          'location': 'Nellysford, Virginia',
+          'name': 'Three Ridges Loop Trail',
+          'star_votes': 61,
+          'stars': 4.6,
+          'summary': 'This route follows a beautiful ridge line trail then drops down in a valley featuring a series of waterfalls.',
+          'trail_url': 'https://www.hikingproject.com/trail/7025566/three-ridges-loop-trail',
+        },
+        {
+          'condition_date': '2020-10-14',
+          'condition_time': '13:52:13',
+          'conditions': 'All Clear',
+          'length': 7.4,
+          'location': 'Salem, Virginia',
+          'name': 'McAfee Knob',
+          'star_votes': 59,
+          'stars': 4.7,
+          'summary': 'The Knob has a panorama of the Catawba Valley, North Mountain, Tinker Cliffs, and Roanoke Valley.',
+          'trail_url': 'https://www.hikingproject.com/trail/7013520/mcafee-knob',
+        },
+        {
+          'condition_date': '2020-10-31',
+          'condition_time': '13:05:10',
+          'conditions': 'Minor Issues',
+          'length': 3.8,
+          'location': 'Stanley, Virginia',
+          'name': 'Rose River Loop',
+          'star_votes': 60,
+          'stars': 4.3,
+          'summary': 'For most of this loop hike, you\'ll be in one of SNP\'s federally designated wilderness areas.',
+          'trail_url': 'https://www.hikingproject.com/trail/7015928/rose-river-loop',
+        },
+        {
+          'condition_date': '2020-11-05',
+          'condition_time': '07:39:40',
+          'conditions': 'All Clear',
+          'length': 8,
+          'location': 'Myersville, Maryland',
+          'name': 'AT: Annapolis Rock and Black Rock',
+          'star_votes': 50,
+          'stars': 4.3,
+          'summary': 'A well-marked section of the Appalachian Trail AT that has two great views.',
+          'trail_url': 'https://www.hikingproject.com/trail/7010754/at-annapolis-rock-and-black-rock',
+        },
+        {
+          'condition_date': '1970-01-01',
+          'condition_time': '00:00:00',
+          'conditions': 'Unknown',
+          'length': 34.8,
+          'location': 'Salem, Virginia',
+          'name': 'Virginia\'s Triple Crown Loop',
+          'star_votes': 32,
+          'stars': 4.8,
+          'summary': 'A 35-mile loop featuring McAfee Knob , Dragon\'s Tooth, and Tinker Cliffs!',
+          'trail_url': 'https://www.hikingproject.com/trail/7040017/virginias-triple-crown-loop',
+        },
+        {
+          'condition_date': '2020-10-25',
+          'condition_time': '11:12:34',
+          'conditions': 'All Clear',
+          'length': 4.5,
+          'location': 'Fayetteville, West Virginia',
+          'name': 'Endless Wall Trail',
+          'star_votes': 39,
+          'stars': 4.5,
+          'summary': 'Sandstone walls provide a striking backdrop for this hike along the New River Gorge.',
+          'trail_url': 'https://www.hikingproject.com/trail/7017640/endless-wall-trail',
+        },
+        {
+          'name': 'Humpback Rocks',
+          'location': 'Nellysford, Virginia',
+          'length': 1.8,
+          'stars': 4.4,
+          'star_votes': 43,
+          'summary': 'A steady climb from wide gravel path to narrow forest singletrack. Stunning 360 views from the top!',
+          'trail_url': 'https://www.hikingproject.com/trail/7005865/humpback-rocks',
+          'conditions': 'All Clear',
+          'condition_date': '2020-10-30',
+          'condition_time': '19:28:51',
+        },
+      ];
+
+      const result = mungedTrail(rawTrails);
+      expect(result).toEqual(expectation);
+    });
+
+
+    test('returns munged yelp', async() => {
+
+      const expectation = [
+        {
+          'name': 'Luc Lac',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/9m-lciDcKbAOAvhh0uWAvw/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/luc-lac-portland-7?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Q Restaurant & Bar',
+          'image_url': 'https://s3-media2.fl.yelpcdn.com/bphoto/jAH0XyZe5N8YTrOy71SuJg/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/q-restaurant-and-bar-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Salt & Straw',
+          'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/r6y-0Q2z3cnx1bQKxn-iHw/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/salt-and-straw-portland-2?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Andina Restaurant',
+          'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/Ij9yv97Ch6NwKhNdpezRhw/o.jpg',
+          'price': '$$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/andina-restaurant-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Voodoo Doughnut - Old Town',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/qHrzQy5ih2Sjhn7MdsCASw/o.jpg',
+          'price': '$',
+          'rating': 3.5,
+          'url': 'https://www.yelp.com/biz/voodoo-doughnut-old-town-portland-2?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Lechon',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/wxLJSjqdB0v3wZSRqyNweg/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/lechon-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Deschutes Brewery Portland Public House',
+          'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/a-Av4dG6Xv3f1_XysFj4ow/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/deschutes-brewery-portland-public-house-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Cheryl’s on 12th',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/w1tcp-5xJyQz19HH05JoVA/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/cheryl-s-on-12th-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Portland City Grill',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/pamrPZVIJuIhiRhOSZMH6g/o.jpg',
+          'price': '$$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/portland-city-grill-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Fogo de Chao Brazilian Steakhouse',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/N3jikH121fU9w6OmM-0JPA/o.jpg',
+          'price': '$$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/fogo-de-chao-brazilian-steakhouse-portland-6?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Nong\'s Khao Man Gai',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/jtp9n8HTjid4lEeXlcKKiA/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/nongs-khao-man-gai-portland-2?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Pine State Biscuits',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/yLQipYkFI3RiRbiDzkR3nA/o.jpg',
+          'price': '$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/pine-state-biscuits-portland-4?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Grassa',
+          'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/zloG1rU5-15Q4MVmf8inbA/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/grassa-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Le Pigeon',
+          'image_url': 'https://s3-media2.fl.yelpcdn.com/bphoto/ARlFgwCNq62izXYf1TUQiA/o.jpg',
+          'price': '$$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/le-pigeon-portland-2?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Cuon - Vietnamese Street Food',
+          'image_url': 'https://s3-media2.fl.yelpcdn.com/bphoto/Zetji_yDJJDG8eksunYiTg/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/cuon-vietnamese-street-food-portland-3?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Olympia Provisions',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/w8w2mkIrowArbwpzIInq9g/o.jpg',
+          'price': '$$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/olympia-provisions-portland-2?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Coava Coffee Roasters',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/dmO50w1y9su1AqvBGj8-Yw/o.jpg',
+          'price': '$',
+          'rating': 4.5,
+          'url': 'https://www.yelp.com/biz/coava-coffee-roasters-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Lardo',
+          'image_url': 'https://s3-media1.fl.yelpcdn.com/bphoto/ARbosTGRwJvCdzux5IHgCQ/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/lardo-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Southpark Seafood',
+          'image_url': 'https://s3-media4.fl.yelpcdn.com/bphoto/Q1O8LFsMUwrOalYacRrh7Q/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/southpark-seafood-portland?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        },
+        {
+          'name': 'Lardo',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/b0E-cDYYiWuvBxFH-YPONA/o.jpg',
+          'price': '$$',
+          'rating': 4,
+          'url': 'https://www.yelp.com/biz/lardo-portland-4?adjust_creative=x-99FdFqFcvNAecfYr8i5A&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=x-99FdFqFcvNAecfYr8i5A'
+        }
+      ];
+
+      const result = mungedYelp(rawYelp);
       expect(result).toEqual(expectation);
     });
 
