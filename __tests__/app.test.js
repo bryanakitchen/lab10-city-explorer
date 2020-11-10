@@ -1,6 +1,9 @@
 require('dotenv').config();
 
-const { mungedLocation, mungedWeather } = require('../utils');
+const { mungedLocation, mungedWeather, mungedTrail, mungedYelp } = require('../utils.js');
+
+const rawTrails = require('../data/trails');
+const rawYelp = require('../data/yelp');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -794,6 +797,146 @@ describe('app routes', () => {
       const result = mungedWeather(rawWeather);
       expect(result).toEqual(expectation);
     });
+
+    test('returns munged trails', async() => {
+
+      const expectation = [
+        {
+          'condition_date': '2020-11-08',
+          'condition_time': '12:37:17',
+          'conditions': 'All Clear',
+          'length': 8.9,
+          'location': 'Stanley, Virginia',
+          'name': 'Old Rag Loop',
+          'star_votes': 238,
+          'stars': 4.8,
+          'summary': 'An extremely popular hike, and for good reason, with awesome scrambling and stunning views.',
+          'trail_url': 'https://www.hikingproject.com/trail/7005428/old-rag-loop',
+        },
+        {
+          'condition_date': '2020-10-17',
+          'condition_time': '11:27:04',
+          'conditions': 'All Clear',
+          'length': 8.2,
+          'location': 'Stanley, Virginia',
+          'name': 'Whiteoak Canyon to Cedar Run Loop',
+          'star_votes': 120,
+          'stars': 4.7,
+          'summary': 'Among the best hikes --if not the best hike-- in Shenandoah. Enjoy waterfalls for 9 miles.',
+          'trail_url': 'https://www.hikingproject.com/trail/7013220/whiteoak-canyon-to-cedar-run-loop',
+        },
+        {
+          'condition_date': '2020-10-13',
+          'condition_time': '09:10:35',
+          'conditions': 'Minor Issues',
+          'length': 19.6,
+          'location': 'Davis, West Virginia',
+          'name': 'Dolly Sods Wilderness',
+          'star_votes': 50,
+          'stars': 4.7,
+          'summary': 'A great multi-night, long-weekend trip with amazing views and incredible changes in terrain',
+          'trail_url': 'https://www.hikingproject.com/trail/7005081/dolly-sods-wilderness',
+        },
+        {
+          'condition_date': '2020-11-08',
+          'condition_time': '13:46:17',
+          'conditions': 'All Clear',
+          'length': 13.4,
+          'location': 'Nellysford, Virginia',
+          'name': 'Three Ridges Loop Trail',
+          'star_votes': 61,
+          'stars': 4.6,
+          'summary': 'This route follows a beautiful ridge line trail then drops down in a valley featuring a series of waterfalls.',
+          'trail_url': 'https://www.hikingproject.com/trail/7025566/three-ridges-loop-trail',
+        },
+        {
+          'condition_date': '2020-10-14',
+          'condition_time': '13:52:13',
+          'conditions': 'All Clear',
+          'length': 7.4,
+          'location': 'Salem, Virginia',
+          'name': 'McAfee Knob',
+          'star_votes': 59,
+          'stars': 4.7,
+          'summary': 'The Knob has a panorama of the Catawba Valley, North Mountain, Tinker Cliffs, and Roanoke Valley.',
+          'trail_url': 'https://www.hikingproject.com/trail/7013520/mcafee-knob',
+        },
+        {
+          'condition_date': '2020-10-31',
+          'condition_time': '13:05:10',
+          'conditions': 'Minor Issues',
+          'length': 3.8,
+          'location': 'Stanley, Virginia',
+          'name': 'Rose River Loop',
+          'star_votes': 60,
+          'stars': 4.3,
+          'summary': 'For most of this loop hike, you\'ll be in one of SNP\'s federally designated wilderness areas.',
+          'trail_url': 'https://www.hikingproject.com/trail/7015928/rose-river-loop',
+        },
+        {
+          'condition_date': '2020-11-05',
+          'condition_time': '07:39:40',
+          'conditions': 'All Clear',
+          'length': 8,
+          'location': 'Myersville, Maryland',
+          'name': 'AT: Annapolis Rock and Black Rock',
+          'star_votes': 50,
+          'stars': 4.3,
+          'summary': 'A well-marked section of the Appalachian Trail AT that has two great views.',
+          'trail_url': 'https://www.hikingproject.com/trail/7010754/at-annapolis-rock-and-black-rock',
+        },
+        {
+          'condition_date': '1970-01-01',
+          'condition_time': '00:00:00',
+          'conditions': 'Unknown',
+          'length': 34.8,
+          'location': 'Salem, Virginia',
+          'name': 'Virginia\'s Triple Crown Loop',
+          'star_votes': 32,
+          'stars': 4.8,
+          'summary': 'A 35-mile loop featuring McAfee Knob , Dragon\'s Tooth, and Tinker Cliffs!',
+          'trail_url': 'https://www.hikingproject.com/trail/7040017/virginias-triple-crown-loop',
+        },
+        {
+          'condition_date': '2020-10-25',
+          'condition_time': '11:12:34',
+          'conditions': 'All Clear',
+          'length': 4.5,
+          'location': 'Fayetteville, West Virginia',
+          'name': 'Endless Wall Trail',
+          'star_votes': 39,
+          'stars': 4.5,
+          'summary': 'Sandstone walls provide a striking backdrop for this hike along the New River Gorge.',
+          'trail_url': 'https://www.hikingproject.com/trail/7017640/endless-wall-trail',
+        },
+        {
+          'name': 'Humpback Rocks',
+          'location': 'Nellysford, Virginia',
+          'length': 1.8,
+          'stars': 4.4,
+          'star_votes': 43,
+          'summary': 'A steady climb from wide gravel path to narrow forest singletrack. Stunning 360 views from the top!',
+          'trail_url': 'https://www.hikingproject.com/trail/7005865/humpback-rocks',
+          'conditions': 'All Clear',
+          'condition_date': '2020-10-30',
+          'condition_time': '19:28:51',
+        },
+      ];
+
+      const result = mungedTrail(rawTrails);
+      expect(result).toEqual(expectation);
+    });
+
+
+    // test('returns munged yelp', async() => {
+
+    //   const expectation = [
+
+    //   ];
+
+    //   const result = mungedYelp(rawYelp);
+    //   expect(result).toEqual(expectation);
+    // });
 
 
   });
